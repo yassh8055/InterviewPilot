@@ -1,0 +1,1549 @@
+/* =========================================================
+   HOME PAGE
+========================================================= */
+
+main.home {
+  /* -------------------------------------------------------
+     THEME
+  ------------------------------------------------------- */
+
+  --surface: rgba(20, 28, 48, 0.82);
+  --surface-soft: rgba(31, 42, 68, 0.72);
+  --line: rgba(148, 163, 184, 0.18);
+
+  --text: #f8fafc;
+  --muted: #9caec8;
+
+  --accent: #7c6cff;
+  --accent-light: #a79dff;
+  --teal: #75e0cf;
+
+  /* -------------------------------------------------------
+     IMPORTANT LAYOUT RESET
+
+     This prevents global main/grid/flex styles from
+     turning the page into a multi-column layout.
+  ------------------------------------------------------- */
+
+  display: block;
+  position: relative;
+
+  width: 100%;
+  min-width: 0;
+  min-height: 100vh;
+
+  margin: 0;
+  padding: 2rem 1.25rem 4rem;
+
+  box-sizing: border-box;
+
+  overflow-x: hidden;
+  overflow-y: visible;
+
+  isolation: isolate;
+
+  background:
+    radial-gradient(
+      circle at 8% 8%,
+      rgba(88, 74, 213, 0.34),
+      transparent 30rem
+    ),
+    radial-gradient(
+      circle at 92% 92%,
+      rgba(23, 156, 190, 0.2),
+      transparent 28rem
+    ),
+    #0b1020;
+
+  color: var(--text);
+
+  font-family:
+    Inter,
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* Make every element inside the page predictable */
+
+main.home *,
+main.home *::before,
+main.home *::after {
+  box-sizing: border-box;
+}
+
+/* =========================================================
+   BACKGROUND GRID
+========================================================= */
+
+main.home::before {
+  position: absolute;
+  inset: 0;
+
+  z-index: -1;
+
+  pointer-events: none;
+
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.018) 1px, transparent 1px);
+
+  background-size: 42px 42px;
+
+  content: "";
+}
+
+/* =========================================================
+   PAGE WIDTH SYSTEM
+
+   Everything is stacked vertically.
+
+   Header
+      ↓
+   Hero
+      ↓
+   Generator
+      ↓
+   Reports
+========================================================= */
+
+main.home .home-header,
+main.home .home-content,
+main.home .reports-section {
+  display: block;
+
+  position: relative;
+  z-index: 1;
+
+  width: min(100%, 1120px);
+
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+main.home .home-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 0;
+  margin-bottom: 4rem;
+}
+
+/* Brand */
+
+main.home .brand-lockup {
+  display: inline-flex;
+
+  align-items: center;
+  gap: 0.7rem;
+
+  padding: 0;
+
+  border: 0;
+
+  background: transparent;
+
+  color: #e8edf6;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.86rem;
+  font-weight: 750;
+
+  transition:
+    color 160ms ease,
+    transform 160ms ease;
+}
+
+main.home .brand-lockup:hover {
+  color: #ffffff;
+
+  transform: translateY(-1px);
+}
+
+/* Brand icon */
+
+main.home .brand-mark {
+  display: grid;
+
+  width: 2.15rem;
+  height: 2.15rem;
+
+  place-items: center;
+
+  border: 1px solid rgba(102, 223, 203, 0.45);
+  border-radius: 0.65rem;
+
+  background: rgba(102, 223, 203, 0.1);
+
+  color: var(--teal);
+
+  font-size: 0.9rem;
+  font-weight: 800;
+}
+
+/* Logout */
+
+main.home .logout-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.55rem;
+
+  padding: 0.55rem 0.8rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 999px;
+
+  outline: none;
+
+  background: transparent;
+
+  color: #aebbd0;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 700;
+
+  transition:
+    border-color 160ms ease,
+    color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+main.home .logout-button:hover:not(:disabled) {
+  border-color: rgba(102, 223, 203, 0.4);
+
+  background: rgba(102, 223, 203, 0.07);
+
+  color: #dffcf7;
+
+  transform: translateY(-1px);
+}
+
+main.home .logout-button:focus-visible {
+  border-color: rgba(102, 223, 203, 0.65);
+
+  box-shadow: 0 0 0 3px rgba(102, 223, 203, 0.1);
+}
+
+main.home .logout-button:disabled {
+  cursor: wait;
+
+  opacity: 0.55;
+}
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+main.home .home-content {
+  display: block;
+}
+
+/* =========================================================
+   HERO / INTRO
+========================================================= */
+
+main.home .home-intro {
+  width: 100%;
+  max-width: 54rem;
+
+  margin: 0 auto 2.25rem;
+
+  text-align: center;
+}
+
+/* Eyebrow */
+
+main.home .eyebrow {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.55rem;
+
+  margin: 0 0 0.9rem;
+
+  color: #bcb5ff;
+
+  font-size: 0.68rem;
+  font-weight: 800;
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+}
+
+main.home .eyebrow::before,
+main.home .eyebrow::after {
+  width: 1.4rem;
+  height: 1px;
+
+  flex: 0 0 auto;
+
+  background: rgba(188, 181, 255, 0.6);
+
+  content: "";
+}
+
+/* Main heading */
+
+main.home .home-intro h1 {
+  width: 100%;
+  max-width: 52rem;
+
+  margin: 0 auto;
+
+  color: #f8fafc;
+
+  font-size: clamp(2.3rem, 5vw, 3.8rem);
+  font-weight: 780;
+
+  letter-spacing: -0.06em;
+  line-height: 1.04;
+}
+
+main.home .home-intro h1 span {
+  display: block;
+
+  color: #a99eff;
+}
+
+/* Description */
+
+main.home .intro-copy {
+  width: 100%;
+  max-width: 43rem;
+
+  margin: 1rem auto 0;
+
+  color: #aebdd2;
+
+  font-size: 0.94rem;
+
+  line-height: 1.65;
+}
+
+/* Feature pills */
+
+main.home .feature-list {
+  display: flex;
+
+  flex-wrap: wrap;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.55rem;
+
+  margin-top: 1.15rem;
+}
+
+main.home .feature-item {
+  display: inline-flex;
+
+  align-items: center;
+
+  gap: 0.42rem;
+
+  padding: 0.4rem 0.68rem;
+
+  border: 1px solid rgba(167, 157, 255, 0.18);
+  border-radius: 999px;
+
+  background: rgba(124, 108, 255, 0.07);
+
+  color: #d5d1ff;
+
+  font-size: 0.7rem;
+  font-weight: 600;
+
+  white-space: nowrap;
+}
+
+main.home .feature-item::before {
+  width: 0.34rem;
+  height: 0.34rem;
+
+  flex: 0 0 auto;
+
+  border-radius: 50%;
+
+  background: var(--accent-light);
+
+  box-shadow: 0 0 0 3px rgba(169, 158, 255, 0.1);
+
+  content: "";
+}
+
+/* =========================================================
+   GENERATOR CARD
+========================================================= */
+
+main.home .generator-card {
+  display: block;
+
+  width: min(100%, 920px);
+
+  margin: 0 auto;
+
+  border: 1px solid var(--line);
+  border-radius: 1.2rem;
+
+  background:
+    linear-gradient(
+      135deg,
+      rgba(124, 108, 255, 0.045),
+      rgba(45, 212, 191, 0.025)
+    ),
+    rgba(13, 19, 36, 0.78);
+
+  box-shadow:
+    0 1.5rem 5rem rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+
+  backdrop-filter: blur(18px);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   GENERATOR HEADER
+========================================================= */
+
+main.home .generator-heading {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  padding: 1.3rem 1.4rem;
+
+  border-bottom: 1px solid rgba(148, 163, 184, 0.12);
+}
+
+main.home .section-kicker {
+  margin: 0 0 0.35rem;
+
+  color: #8f9db7;
+
+  font-size: 0.59rem;
+  font-weight: 800;
+
+  letter-spacing: 0.15em;
+
+  text-transform: uppercase;
+}
+
+main.home .generator-heading h2 {
+  margin: 0;
+
+  color: #f4f7ff;
+
+  font-size: 1.15rem;
+  font-weight: 750;
+
+  letter-spacing: -0.035em;
+  line-height: 1.2;
+}
+
+/* 3 steps badge */
+
+main.home .generator-status {
+  flex: 0 0 auto;
+
+  padding: 0.3rem 0.55rem;
+
+  border: 1px solid rgba(127, 232, 213, 0.13);
+  border-radius: 999px;
+
+  background: rgba(89, 224, 210, 0.05);
+
+  color: #8ee8d8;
+
+  font-size: 0.55rem;
+  font-weight: 750;
+
+  letter-spacing: 0.07em;
+
+  text-transform: uppercase;
+}
+
+/* =========================================================
+   GENERATOR STEPS
+========================================================= */
+
+main.home .generator-step {
+  display: grid;
+
+  grid-template-columns: 2.5rem minmax(0, 1fr);
+
+  gap: 1rem;
+
+  width: 100%;
+
+  padding: 1.35rem 1.4rem;
+}
+
+main.home .step-number {
+  display: grid;
+
+  width: 2.25rem;
+  height: 2.25rem;
+
+  place-items: center;
+
+  border: 1px solid rgba(124, 108, 255, 0.22);
+  border-radius: 0.65rem;
+
+  background: rgba(124, 108, 255, 0.09);
+
+  color: #bcb4ff;
+
+  font-size: 0.62rem;
+  font-weight: 850;
+}
+
+main.home .step-content {
+  min-width: 0;
+
+  width: 100%;
+}
+
+main.home .step-heading {
+  display: flex;
+
+  align-items: flex-start;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  margin-bottom: 0.75rem;
+}
+
+main.home .step-label,
+main.home .field-title {
+  display: block;
+
+  color: #a9a0ef;
+
+  font-size: 0.58rem;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+main.home .step-heading h3 {
+  margin: 0.22rem 0 0;
+
+  color: #eef3fc;
+
+  font-size: 0.88rem;
+  font-weight: 700;
+
+  line-height: 1.35;
+}
+
+/* Required / recommended */
+
+main.home .required-label,
+main.home .optional-label {
+  flex: 0 0 auto;
+
+  padding: 0.25rem 0.45rem;
+
+  border-radius: 999px;
+
+  font-size: 0.52rem;
+  font-weight: 750;
+
+  letter-spacing: 0.02em;
+
+  text-transform: uppercase;
+}
+
+main.home .required-label {
+  background: rgba(255, 159, 159, 0.07);
+
+  color: #e9a4a4;
+}
+
+main.home .optional-label {
+  background: rgba(127, 232, 213, 0.06);
+
+  color: #82d8ca;
+}
+
+/* =========================================================
+   TEXTAREAS
+========================================================= */
+
+main.home textarea {
+  display: block;
+
+  width: 100%;
+  max-width: 100%;
+
+  box-sizing: border-box;
+
+  padding: 0.9rem 1rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 0.75rem;
+
+  outline: none;
+
+  resize: vertical;
+
+  background: rgba(24, 34, 57, 0.68);
+
+  color: var(--text);
+
+  font: inherit;
+  font-size: 0.82rem;
+
+  line-height: 1.6;
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+main.home textarea::placeholder {
+  color: #70819d;
+}
+
+main.home textarea:hover {
+  border-color: rgba(167, 157, 255, 0.3);
+}
+
+main.home textarea:focus {
+  border-color: rgba(167, 157, 255, 0.72);
+
+  background: rgba(29, 41, 68, 0.82);
+
+  box-shadow: 0 0 0 3px rgba(124, 108, 255, 0.1);
+}
+
+/* Job description */
+
+main.home .role-step textarea {
+  width: 100%;
+
+  min-height: 9rem;
+  height: 9rem;
+}
+
+/* Hint */
+
+main.home .field-hint {
+  margin: 0.45rem 0 0;
+
+  color: #73839d;
+
+  font-size: 0.62rem;
+
+  line-height: 1.45;
+}
+
+/* =========================================================
+   STEP DIVIDER
+========================================================= */
+
+main.home .step-divider {
+  width: calc(100% - 2.8rem);
+  height: 1px;
+
+  margin: 0 1.4rem;
+
+  background: rgba(148, 163, 184, 0.1);
+}
+
+/* =========================================================
+   BACKGROUND SECTION
+========================================================= */
+
+main.home .background-grid {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 0.8fr)
+    minmax(0, 1.2fr);
+
+  gap: 0.8rem;
+
+  width: 100%;
+}
+
+main.home .background-field {
+  min-width: 0;
+
+  width: 100%;
+
+  padding: 0.8rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.12);
+  border-radius: 0.75rem;
+
+  background: rgba(8, 13, 24, 0.35);
+}
+
+main.home .background-field > .field-title {
+  margin-bottom: 0.55rem;
+
+  color: #b3bdd1;
+}
+
+/* =========================================================
+   RESUME UPLOAD
+========================================================= */
+
+main.home .file-label {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.65rem;
+
+  width: 100%;
+  min-height: 5.5rem;
+
+  padding: 0.75rem;
+
+  border: 1px dashed rgba(167, 157, 255, 0.35);
+  border-radius: 0.65rem;
+
+  background: linear-gradient(
+    135deg,
+    rgba(124, 108, 255, 0.09),
+    rgba(45, 212, 191, 0.035)
+  );
+
+  color: #dcd9ff;
+
+  cursor: pointer;
+
+  transition:
+    border-color 160ms ease,
+    background 160ms ease,
+    transform 160ms ease;
+}
+
+main.home .file-label:hover {
+  border-color: rgba(185, 178, 255, 0.72);
+
+  background: linear-gradient(
+    135deg,
+    rgba(124, 108, 255, 0.16),
+    rgba(45, 212, 191, 0.06)
+  );
+
+  transform: translateY(-1px);
+}
+
+/* Hidden file input */
+
+main.home input[type="file"] {
+  position: absolute;
+
+  width: 1px;
+  height: 1px;
+
+  overflow: hidden;
+
+  opacity: 0;
+
+  pointer-events: none;
+}
+
+/* Upload icon */
+
+main.home .file-icon {
+  display: grid;
+
+  flex: 0 0 2.25rem;
+
+  width: 2.25rem;
+  height: 2.25rem;
+
+  place-items: center;
+
+  border: 1px solid rgba(167, 157, 255, 0.28);
+  border-radius: 0.55rem;
+
+  background: rgba(124, 108, 255, 0.11);
+
+  color: var(--accent-light);
+
+  font-size: 1rem;
+}
+
+/* File text */
+
+main.home .file-copy {
+  display: flex;
+
+  min-width: 0;
+
+  flex: 1;
+
+  flex-direction: column;
+
+  gap: 0.2rem;
+}
+
+main.home .file-copy strong {
+  display: block;
+
+  overflow: hidden;
+
+  color: #e4e5ff;
+
+  font-size: 0.72rem;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+main.home .file-copy small {
+  color: #8190a8;
+
+  font-size: 0.6rem;
+}
+
+/* Browse */
+
+main.home .file-action {
+  flex: 0 0 auto;
+
+  padding: 0.35rem 0.5rem;
+
+  border: 1px solid rgba(167, 157, 255, 0.22);
+  border-radius: 0.45rem;
+
+  color: #c5bfff;
+
+  font-size: 0.58rem;
+  font-weight: 750;
+}
+
+/* =========================================================
+   SELF DESCRIPTION
+========================================================= */
+
+main.home .self-field textarea {
+  width: 100%;
+
+  min-height: 5.5rem;
+  height: 5.5rem;
+
+  resize: vertical;
+}
+
+/* =========================================================
+   GENERATE ACTION
+========================================================= */
+
+main.home .generator-action {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  gap: 1.5rem;
+
+  padding: 1rem 1.4rem;
+
+  border-top: 1px solid rgba(148, 163, 184, 0.11);
+
+  background: rgba(8, 13, 24, 0.28);
+}
+
+main.home .action-copy {
+  min-width: 0;
+}
+
+main.home .action-copy span {
+  color: #8e9db8;
+
+  font-size: 0.55rem;
+  font-weight: 800;
+
+  letter-spacing: 0.12em;
+}
+
+main.home .action-copy p {
+  max-width: 35rem;
+
+  margin: 0.25rem 0 0;
+
+  color: #74849e;
+
+  font-size: 0.62rem;
+
+  line-height: 1.45;
+}
+
+/* =========================================================
+   PRIMARY BUTTON
+========================================================= */
+
+main.home .primary-button {
+  display: inline-flex;
+
+  align-items: center;
+  justify-content: center;
+
+  gap: 0.75rem;
+
+  flex: 0 0 auto;
+
+  min-width: 15rem;
+
+  padding: 0.75rem 1rem;
+
+  border: 0;
+  border-radius: 0.65rem;
+
+  outline: none;
+
+  background: linear-gradient(115deg, #7665f5, #8f77f9);
+
+  box-shadow: 0 0.65rem 1.5rem rgba(101, 82, 235, 0.25);
+
+  color: #ffffff;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 750;
+
+  transition:
+    transform 160ms ease,
+    box-shadow 160ms ease,
+    filter 160ms ease,
+    opacity 160ms ease;
+}
+
+main.home .primary-button:hover:not(:disabled) {
+  box-shadow: 0 0.9rem 1.8rem rgba(101, 82, 235, 0.38);
+
+  filter: brightness(1.06);
+
+  transform: translateY(-1px);
+}
+
+main.home .primary-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+main.home .primary-button:focus-visible {
+  box-shadow:
+    0 0 0 3px rgba(124, 108, 255, 0.18),
+    0 0.65rem 1.5rem rgba(101, 82, 235, 0.25);
+}
+
+main.home .primary-button:disabled {
+  cursor: not-allowed;
+
+  opacity: 0.45;
+
+  transform: none;
+}
+
+main.home .button-spinner {
+  display: inline-block;
+  width: 0.9rem;
+  height: 0.9rem;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: home-button-spin 700ms linear infinite;
+}
+
+main.home .button-arrow {
+  display: inline-block;
+  min-width: 0.75rem;
+  text-align: center;
+}
+
+@keyframes home-button-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   REPORT LIBRARY
+========================================================= */
+
+main.home .reports-section {
+  margin-top: 3.5rem;
+}
+
+/* Reports heading */
+
+main.home .reports-heading {
+  display: flex;
+
+  align-items: flex-end;
+  justify-content: space-between;
+
+  gap: 1rem;
+
+  margin-bottom: 1rem;
+}
+
+main.home .reports-heading h2 {
+  margin: 0;
+
+  color: #f8fafc;
+
+  font-size: 1.45rem;
+  font-weight: 750;
+
+  letter-spacing: -0.04em;
+
+  line-height: 1.2;
+}
+
+main.home .report-count {
+  flex: 0 0 auto;
+
+  padding: 0.38rem 0.62rem;
+
+  border: 1px solid rgba(45, 212, 191, 0.18);
+  border-radius: 999px;
+
+  background: rgba(45, 212, 191, 0.06);
+
+  color: #8ee8d8;
+
+  font-size: 0.62rem;
+  font-weight: 700;
+}
+
+/* =========================================================
+   REPORT LIST
+========================================================= */
+
+main.home .reports-list {
+  display: grid;
+
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+
+  gap: 0.7rem;
+
+  width: 100%;
+
+  padding: 0;
+  margin: 0;
+
+  list-style: none;
+}
+
+/* Report card */
+
+main.home .report-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 0.8rem;
+
+  min-width: 0;
+  min-height: 6rem;
+
+  padding: 0.85rem 0.9rem;
+
+  border: 1px solid rgba(148, 163, 184, 0.14);
+  border-radius: 0.85rem;
+
+  background: linear-gradient(
+    135deg,
+    rgba(28, 38, 64, 0.8),
+    rgba(16, 24, 43, 0.72)
+  );
+
+  cursor: pointer;
+
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease,
+    box-shadow 160ms ease;
+}
+
+main.home .report-card:hover,
+main.home .report-card:focus-visible {
+  outline: none;
+
+  border-color: rgba(45, 212, 191, 0.38);
+
+  background: linear-gradient(
+    135deg,
+    rgba(34, 54, 73, 0.92),
+    rgba(18, 31, 49, 0.86)
+  );
+
+  box-shadow: 0 0.8rem 2rem rgba(0, 0, 0, 0.18);
+
+  transform: translateY(-2px);
+}
+
+/* Report number */
+
+main.home .report-index {
+  display: grid;
+
+  flex: 0 0 2.4rem;
+
+  width: 2.4rem;
+  height: 2.4rem;
+
+  place-items: center;
+
+  border-radius: 0.6rem;
+
+  background: rgba(124, 108, 255, 0.11);
+
+  color: #bcb5ff;
+
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+/* Report details */
+
+main.home .report-details {
+  min-width: 0;
+
+  flex: 1;
+}
+
+main.home .report-type {
+  display: block;
+
+  margin-bottom: 0.25rem;
+
+  color: #777f9b;
+
+  font-size: 0.49rem;
+  font-weight: 800;
+
+  letter-spacing: 0.1em;
+
+  text-transform: uppercase;
+}
+
+main.home .report-details h3 {
+  overflow: hidden;
+
+  margin: 0;
+
+  color: #f3f6fb;
+
+  font-size: 0.84rem;
+  font-weight: 700;
+
+  line-height: 1.3;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+main.home .report-details p {
+  margin: 0.3rem 0 0;
+
+  color: #8292ac;
+
+  font-size: 0.62rem;
+}
+
+/* Arrow */
+
+main.home .report-arrow {
+  flex: 0 0 auto;
+
+  color: var(--teal);
+
+  font-size: 1.15rem;
+
+  transition: transform 160ms ease;
+}
+
+main.home .report-card:hover .report-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* =========================================================
+   EMPTY REPORT STATE
+========================================================= */
+
+main.home .empty-reports {
+  display: flex;
+
+  align-items: center;
+
+  gap: 1rem;
+
+  width: 100%;
+
+  padding: 1.2rem;
+
+  border: 1px dashed rgba(148, 163, 184, 0.22);
+  border-radius: 0.85rem;
+
+  background: rgba(20, 29, 49, 0.4);
+}
+
+main.home .empty-mark {
+  display: grid;
+
+  flex: 0 0 2.4rem;
+
+  width: 2.4rem;
+  height: 2.4rem;
+
+  place-items: center;
+
+  border: 1px solid rgba(45, 212, 191, 0.3);
+  border-radius: 50%;
+
+  color: var(--teal);
+
+  font-size: 1.2rem;
+}
+
+main.home .empty-reports h3 {
+  margin: 0 0 0.25rem;
+
+  color: #e8edf6;
+
+  font-size: 0.85rem;
+}
+
+main.home .empty-reports p {
+  margin: 0;
+
+  color: #8493aa;
+
+  font-size: 0.65rem;
+
+  line-height: 1.5;
+}
+
+/* =========================================================
+   LOADING STATE
+========================================================= */
+
+main.home .home-loading {
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  flex-direction: column;
+
+  min-height: 70vh;
+
+  color: #95a4bd;
+
+  font-size: 0.72rem;
+}
+
+main.home .loading-orb {
+  width: 2.4rem;
+  height: 2.4rem;
+
+  margin-bottom: 0.9rem;
+
+  border: 2px solid rgba(148, 163, 184, 0.1);
+
+  border-top-color: #9b8cff;
+
+  border-radius: 50%;
+
+  animation: home-spin 800ms linear infinite;
+}
+
+@keyframes home-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+  main.home {
+    padding: 1.5rem 1rem 3.5rem;
+  }
+
+  main.home .home-header,
+  main.home .home-content,
+  main.home .reports-section {
+    width: min(100%, 760px);
+  }
+
+  main.home .home-header {
+    margin-bottom: 3.5rem;
+  }
+
+  main.home .generator-card {
+    width: 100%;
+  }
+
+  main.home .background-grid {
+    grid-template-columns:
+      minmax(0, 1fr)
+      minmax(0, 1fr);
+  }
+
+  main.home .reports-list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 700px) {
+  main.home {
+    padding: 1rem 0.75rem 3rem;
+  }
+
+  main.home .home-header {
+    margin-bottom: 2.8rem;
+  }
+
+  main.home .home-intro {
+    margin-bottom: 1.75rem;
+
+    text-align: left;
+  }
+
+  main.home .eyebrow {
+    justify-content: flex-start;
+
+    font-size: 0.6rem;
+  }
+
+  main.home .eyebrow::before {
+    display: none;
+  }
+
+  main.home .home-intro h1 {
+    margin-left: 0;
+    margin-right: 0;
+
+    font-size: clamp(2.15rem, 10vw, 3rem);
+  }
+
+  main.home .intro-copy {
+    margin-left: 0;
+    margin-right: 0;
+
+    font-size: 0.82rem;
+  }
+
+  main.home .feature-list {
+    justify-content: flex-start;
+  }
+
+  main.home .generator-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    padding: 1.1rem;
+  }
+
+  main.home .generator-step {
+    grid-template-columns: 1fr;
+
+    gap: 0.75rem;
+
+    padding: 1.1rem;
+  }
+
+  main.home .step-number {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  main.home .step-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+
+    gap: 0.4rem;
+  }
+
+  main.home .role-step textarea {
+    min-height: 10rem;
+    height: 10rem;
+  }
+
+  main.home .background-grid {
+    grid-template-columns: 1fr;
+  }
+
+  main.home .generator-action {
+    align-items: stretch;
+
+    flex-direction: column;
+
+    padding: 1.1rem;
+  }
+
+  main.home .action-copy p {
+    max-width: none;
+  }
+
+  main.home .primary-button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  main.home .reports-section {
+    margin-top: 2.8rem;
+  }
+
+  main.home .reports-heading {
+    align-items: flex-start;
+
+    flex-direction: column;
+  }
+
+  main.home .reports-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE
+========================================================= */
+
+@media (max-width: 480px) {
+  main.home {
+    padding: 0.85rem 0.65rem 2.5rem;
+  }
+
+  main.home .home-header {
+    margin-bottom: 2.25rem;
+  }
+
+  main.home .brand-lockup {
+    gap: 0.5rem;
+
+    font-size: 0.75rem;
+  }
+
+  main.home .brand-mark {
+    width: 1.9rem;
+    height: 1.9rem;
+  }
+
+  main.home .logout-button {
+    padding: 0.45rem 0.6rem;
+
+    font-size: 0.65rem;
+  }
+
+  main.home .home-intro h1 {
+    font-size: 2.15rem;
+  }
+
+  main.home .intro-copy {
+    font-size: 0.8rem;
+  }
+
+  main.home .feature-list {
+    gap: 0.4rem;
+  }
+
+  main.home .feature-item {
+    padding: 0.35rem 0.55rem;
+
+    font-size: 0.59rem;
+  }
+
+  main.home .generator-heading h2 {
+    font-size: 1.05rem;
+  }
+
+  main.home .generator-step {
+    padding: 1rem;
+  }
+
+  main.home .step-heading h3 {
+    font-size: 0.82rem;
+  }
+
+  main.home .role-step textarea {
+    min-height: 9rem;
+    height: 9rem;
+  }
+
+  main.home .file-label {
+    min-height: 5rem;
+  }
+
+  main.home .file-action {
+    display: none;
+  }
+
+  main.home .reports-heading h2 {
+    font-size: 1.25rem;
+  }
+
+  main.home .report-card {
+    min-height: 5.5rem;
+
+    padding: 0.75rem;
+  }
+}
+
+/* =========================================================
+   REDUCED MOTION
+========================================================= */
+
+@media (prefers-reduced-motion: reduce) {
+  main.home *,
+  main.home *::before,
+  main.home *::after {
+    scroll-behavior: auto !important;
+
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+
+    transition-duration: 0.01ms !important;
+  }
+}
