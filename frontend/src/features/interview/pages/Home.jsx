@@ -52,7 +52,7 @@ const Home = () => {
 
     try {
       await logout();
-      window.location.assign("/login");
+      navigate("/login");
     } catch (error) {
       setLoggingOut(false);
     }
