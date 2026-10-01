@@ -9,7 +9,7 @@ app.use(express.json()); //allow to read data in req.body
 app.use(cookieParser()); //parse the Cookie header
 app.use(
   cors({
-    origin: "http://localhost:5173",
+    origin: process.env.FRONTEND_URL,
     credentials: true,
   }),
 );
