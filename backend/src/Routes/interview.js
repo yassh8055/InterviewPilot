@@ -5,6 +5,7 @@ const {
   getAllinterviewReportsController,
   generateInterviewReportController,
   interviewReportByIdController,
+  generateReumePdfController
 } = require("../controllers/interviewController");
 
 const interviewRouter = express.Router();
@@ -38,5 +39,12 @@ interviewRouter.post(
  * @access private
  */
 interviewRouter.post("/", authUser, getAllinterviewReportsController);
+
+/**
+ * @route POST /api/interview/resume/pdf
+ * @description generate new resume pdf on the basis of user self description, resume Pdf, job description
+ * @access private
+ */
+interviewRouter.post("/resume/pdf/:interviewReportId", authUser, generateReumePdfController)
 
 module.exports = interviewRouter;

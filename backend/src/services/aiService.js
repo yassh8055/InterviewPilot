@@ -129,5 +129,83 @@ const generateInterviewReport = async (
   return result;
 };
 
+const genertePdf = async (htmlContent) => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
-module.exports = generateInterviewReport;
+  const pdfBuffer = await page.pdf({
+    format: "A4", margin: {
+      top: "20mm",
+      bottom: "20mm",
+      left: "15mm",
+      right: "15mm"
+    }
+  });
+
+  await browser.close();
+  return pdfBuffer;
+};
+
+const generateReumePdf = async ({
+  resume,
+  selfDescription,
+  jobDescription,
+}) => {
+  const resumePdfSchema = z.object({
+    html: z
+      .string()
+      .describe(
+        "The HTML content of resume which can be converted to pdf using any library like puppeteer",
+      ),
+  });
+
+  const prompt = `You are an expert resume writer, recruiter, and ATS optimization specialist.
+
+Create a polished, truthful, job-targeted resume for the candidate using the information below.
+Do not invent employers, job titles, dates, degrees, certifications, technologies, achievements,
+metrics, or other facts. When information is missing, omit it rather than adding a placeholder
+or making an assumption.
+
+Candidate resume and experience:
+${resume}
+
+Candidate self-description:
+${selfDescription}
+
+Target job description:
+${jobDescription}
+
+Resume requirements:
+- Tailor the professional summary, skills, and experience to the target role.
+- Prioritize relevant experience and use concise, achievement-focused bullet points.
+- Use keywords from the job description naturally and accurately for ATS compatibility.
+- Preserve the candidate's actual level of experience; do not exaggerate seniority.
+- Use a clean single-column layout that is easy to scan and prints well on A4 pages.
+- Include appropriate sections such as name/contact information, summary, skills, experience,
+  projects, education, certifications, and achievements when supported by the source data.
+- Use semantic HTML5 elements and inline CSS only. Do not use JavaScript, external assets,
+  external fonts, images, SVGs, forms, markdown, or explanatory text outside the resume.
+- Make the HTML self-contained and suitable for direct use with Puppeteer's page.setContent().
+- Ensure readable typography, consistent spacing, strong section hierarchy, and print-friendly
+  colors. Use page-break rules where helpful, but do not force unnecessary blank pages.
+
+Return only a valid JSON object with exactly one property named "html". Its value must be a
+complete self-contained HTML document beginning with <!DOCTYPE html>. Escape all characters as
+needed so the response is valid JSON. Do not wrap the JSON in Markdown code fences.`;
+
+  const response = await ai.interactions.create({
+    model: "gemini-3.6-flash",
+    input: prompt,
+    response_format: {
+      type: "text",
+      mime_type: "application/json",
+      schema: z.toJSONSchema(resumePdfSchema),
+    },
+  });
+  const jsonContent = JSON.parse(response.output_text);
+  const pdfBuffer = await genertePdf(jsonContent.html);
+
+  return pdfBuffer;
+};
+module.exports = { generateInterviewReport, generateReumePdf };

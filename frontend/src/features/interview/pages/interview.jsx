@@ -23,7 +23,7 @@ const reportSections = [
 ];
 
 const Interview = () => {
-  const { report, loading } = useInterview();
+  const { report, loading, resumeLoading, getResumePdf } = useInterview();
 
   const { interviewId } = useParams();
   const navigate = useNavigate();
@@ -80,6 +80,29 @@ const Interview = () => {
 
   return (
     <main className="interview-page">
+      {resumeLoading && (
+        <div
+          className="resume-loading-overlay"
+          role="status"
+          aria-live="polite"
+        >
+          <div className="resume-loading-panel">
+            <div className="resume-loading-icon" aria-hidden="true">
+              <span />
+            </div>
+            <p className="section-label">AI RESUME</p>
+            <h2>Creating your resume</h2>
+            <p>
+              Tailoring your experience to this role and preparing the PDF
+              download.
+            </p>
+            <div className="resume-loading-line" aria-hidden="true">
+              <span />
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="interview-shell">
         {/* Back */}
         <button
@@ -104,12 +127,26 @@ const Interview = () => {
             </p>
           </div>
 
-          {interviewId && (
-            <div className="report-id">
-              <span>REPORT</span>
-              <strong>#{interviewId.slice(-6)}</strong>
-            </div>
-          )}
+          <div className="report-header-actions">
+            <button
+              className="download-resume-button"
+              type="button"
+              aria-label={`Download resume for ${jobTitle || "this role"}`}
+              title={`Download resume for ${jobTitle || "this role"}`}
+              onClick={() => getResumePdf(interviewId)}
+              disabled={resumeLoading}
+            >
+              <span aria-hidden="true">{resumeLoading ? "•" : "↓"}</span>
+              {resumeLoading ? "Preparing resume..." : "Download AI resume"}
+            </button>
+
+            {interviewId && (
+              <div className="report-id">
+                <span>REPORT</span>
+                <strong>#{interviewId.slice(-6)}</strong>
+              </div>
+            )}
+          </div>
         </header>
 
         {reportAI ? (

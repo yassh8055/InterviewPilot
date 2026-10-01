@@ -140,6 +140,168 @@
   font-size: 0.7rem;
 }
 
+.report-header-actions {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+
+.download-resume-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+
+  padding: 0.65rem 0.85rem;
+
+  border: 1px solid rgba(127, 232, 213, 0.35);
+  border-radius: 0.65rem;
+
+  background: rgba(127, 232, 213, 0.1);
+  color: #dffcf6;
+
+  cursor: pointer;
+
+  font: inherit;
+  font-size: 0.7rem;
+  font-weight: 750;
+  white-space: nowrap;
+
+  transition:
+    background 160ms ease,
+    border-color 160ms ease,
+    transform 160ms ease;
+}
+
+.download-resume-button:hover {
+  background: rgba(127, 232, 213, 0.18);
+  border-color: rgba(127, 232, 213, 0.65);
+  transform: translateY(-2px);
+}
+
+.download-resume-button:disabled {
+  cursor: wait;
+  opacity: 0.75;
+  transform: none;
+}
+
+.download-resume-button span {
+  color: #7fe8d5;
+  font-size: 1rem;
+  line-height: 0.8;
+}
+
+.resume-loading-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+
+  display: grid;
+  place-items: center;
+
+  padding: 1.25rem;
+
+  background: rgba(5, 9, 20, 0.72);
+  backdrop-filter: blur(0.7rem);
+}
+
+.resume-loading-panel {
+  width: min(100%, 25rem);
+  padding: 2rem;
+
+  border: 1px solid rgba(127, 232, 213, 0.24);
+  border-radius: 1.1rem;
+
+  background:
+    linear-gradient(145deg, rgba(127, 232, 213, 0.1), transparent 55%), #111a2d;
+
+  box-shadow:
+    0 1.5rem 5rem rgba(0, 0, 0, 0.35),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+
+  text-align: center;
+  animation: resume-panel-enter 220ms ease-out;
+}
+
+.resume-loading-icon {
+  display: grid;
+  place-items: center;
+
+  width: 3.5rem;
+  height: 3.5rem;
+  margin: 0 auto 1.25rem;
+
+  border: 1px solid rgba(127, 232, 213, 0.2);
+  border-radius: 1rem;
+
+  background: rgba(127, 232, 213, 0.08);
+}
+
+.resume-loading-icon span {
+  width: 1.4rem;
+  height: 1.4rem;
+
+  border: 2px solid rgba(223, 252, 246, 0.22);
+  border-top-color: #7fe8d5;
+  border-radius: 50%;
+
+  animation: report-spin 750ms linear infinite;
+}
+
+.resume-loading-panel h2 {
+  margin: 0.5rem 0 0;
+
+  color: #f5f8ff;
+  font-size: 1.35rem;
+  letter-spacing: -0.04em;
+}
+
+.resume-loading-panel > p:not(.section-label) {
+  margin: 0.65rem auto 0;
+
+  color: #9eafca;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.resume-loading-line {
+  height: 0.2rem;
+  margin-top: 1.5rem;
+  overflow: hidden;
+
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.14);
+}
+
+.resume-loading-line span {
+  display: block;
+  width: 42%;
+  height: 100%;
+
+  border-radius: inherit;
+  background: #7fe8d5;
+  animation: resume-loading-progress 1.3s ease-in-out infinite;
+}
+
+@keyframes resume-panel-enter {
+  from {
+    opacity: 0;
+    transform: translateY(0.5rem) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+@keyframes resume-loading-progress {
+  0% {
+    transform: translateX(-120%);
+  }
+  100% {
+    transform: translateX(260%);
+  }
+}
+
 /* =========================================================
    READINESS HERO
 ========================================================= */
@@ -185,11 +347,10 @@
 
   border-radius: 50%;
 
-  background:
-    conic-gradient(
-      #8c7dff var(--score),
-      rgba(148, 163, 184, 0.12) var(--score)
-    );
+  background: conic-gradient(
+    #8c7dff var(--score),
+    rgba(148, 163, 184, 0.12) var(--score)
+  );
 
   position: relative;
 }
@@ -980,6 +1141,11 @@
 
   .report-id {
     align-items: flex-start;
+  }
+
+  .report-header-actions {
+    align-items: flex-start;
+    flex-wrap: wrap;
   }
 
   .readiness-card {

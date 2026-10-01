@@ -13,6 +13,7 @@ const Home = () => {
   const [resumeFileName, setResumeFileName] = useState("");
   const [loggingOut, setLoggingOut] = useState(false);
   const [generating, setGenerating] = useState(false);
+  const [generationError, setGenerationError] = useState("");
 
   const resumeFileRef = useRef();
   const navigate = useNavigate();
@@ -27,6 +28,7 @@ const Home = () => {
     const resumeFile = resumeFileRef.current?.files?.[0];
 
     setGenerating(true);
+    setGenerationError("");
 
     try {
       const data = await generateReport(
@@ -38,6 +40,8 @@ const Home = () => {
       if (data?._id) {
         navigate(`/interview/${data._id}`);
       }
+    } catch (error) {
+      setGenerationError(error.message);
     } finally {
       setGenerating(false);
     }
@@ -287,6 +291,12 @@ const Home = () => {
               </span>
             </button>
           </div>
+
+          {generationError && (
+            <p className="form-error" role="alert">
+              {generationError}
+            </p>
+          )}
         </section>
       </section>
 

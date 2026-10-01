@@ -15,7 +15,7 @@ export const generateInterviewReport = async (
   formData.append("selfDescription", selfDescription);
   formData.append("resumeFile", resumeFile);
 
-  const response =await api.post("/api/interview/generate", formData, {
+  const response = await api.post("/api/interview/generate", formData, {
     headers: {
       "Content-Type": "multipart/form-data",
     },
@@ -24,11 +24,17 @@ export const generateInterviewReport = async (
 };
 
 export const getInterviewReportById = async (interviewId) => {
-  const response =await api.post(`/api/interview/report/${interviewId}`);
+  const response = await api.post(`/api/interview/report/${interviewId}`);
   return response.data;
 };
 
-export const getAllInterviewReports =async  (  ) => {
+export const getAllInterviewReports = async () => {
   const response = await api.post(`/api/interview/`);
   return response.data;
 };
+export const generateResumePdf = async ({ interviewReportId }) => {
+  const response = await api.post(`/api/interview/resume/pdf/${interviewReportId}`, null, {
+    responseType: "blob"
+  });
+  return response.data;
+}
