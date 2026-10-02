@@ -1297,7 +1297,7 @@ main.home .loading-orb {
 }
 
 /* =========================================================
-   TABLET
+   RESPONSIVE
 ========================================================= */
 
 @media (max-width: 900px) {
@@ -1312,17 +1312,11 @@ main.home .loading-orb {
   }
 
   main.home .home-header {
-    margin-bottom: 3.5rem;
-  }
-
-  main.home .generator-card {
-    width: 100%;
+    margin-bottom: 3rem;
   }
 
   main.home .background-grid {
-    grid-template-columns:
-      minmax(0, 1fr)
-      minmax(0, 1fr);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   main.home .reports-list {
@@ -1336,15 +1330,69 @@ main.home .loading-orb {
 
 @media (max-width: 700px) {
   main.home {
-    padding: 1rem 0.75rem 3rem;
+    width: 100%;
+    min-width: 0;
+    min-height: 100dvh;
+
+    padding: 0.75rem 1rem 3rem;
+
+    background:
+      radial-gradient(
+        circle at 10% 0%,
+        rgba(88, 74, 213, 0.22),
+        transparent 20rem
+      ),
+      #0b1020;
   }
+
+  /* Keep the mobile page visually clean.
+     The desktop grid becomes distracting on small screens. */
+  main.home::before {
+    display: none;
+  }
+
+  /* -----------------------------------------
+     HEADER
+  ----------------------------------------- */
 
   main.home .home-header {
-    margin-bottom: 2.8rem;
+    width: 100%;
+
+    margin-bottom: 3.25rem;
   }
 
+  main.home .brand-lockup {
+    gap: 0.55rem;
+
+    font-size: 0.74rem;
+  }
+
+  main.home .brand-mark {
+    width: 2rem;
+    height: 2rem;
+
+    border-radius: 0.55rem;
+  }
+
+  main.home .logout-button {
+    min-height: 2.35rem;
+
+    padding: 0.45rem 0.65rem;
+
+    font-size: 0.62rem;
+  }
+
+  /* -----------------------------------------
+     HERO
+
+     Important:
+     Less information above the generator.
+  ----------------------------------------- */
+
   main.home .home-intro {
-    margin-bottom: 1.75rem;
+    width: 100%;
+
+    margin: 0 0 2.5rem;
 
     text-align: left;
   }
@@ -1352,29 +1400,92 @@ main.home .loading-orb {
   main.home .eyebrow {
     justify-content: flex-start;
 
-    font-size: 0.6rem;
+    margin-bottom: 0.75rem;
+
+    font-size: 0.56rem;
+    letter-spacing: 0.12em;
   }
 
-  main.home .eyebrow::before {
+  /* Remove decorative horizontal line */
+  main.home .eyebrow::before,
+  main.home .eyebrow::after {
     display: none;
   }
 
   main.home .home-intro h1 {
-    margin-left: 0;
-    margin-right: 0;
+    max-width: 22rem;
 
-    font-size: clamp(2.15rem, 10vw, 3rem);
+    margin: 0;
+
+    font-size: clamp(2.15rem, 11vw, 2.8rem);
+
+    letter-spacing: -0.065em;
+    line-height: 0.98;
+  }
+
+  main.home .home-intro h1 span {
+    display: inline;
   }
 
   main.home .intro-copy {
-    margin-left: 0;
-    margin-right: 0;
+    max-width: 25rem;
 
-    font-size: 0.82rem;
+    margin: 1rem 0 0;
+
+    color: #91a0b8;
+
+    font-size: 0.8rem;
+    line-height: 1.55;
   }
+
+  /* -----------------------------------------
+     FEATURE PILLS
+
+     Make them quieter instead of another
+     visual block.
+  ----------------------------------------- */
 
   main.home .feature-list {
     justify-content: flex-start;
+
+    gap: 0.35rem;
+
+    margin-top: 1rem;
+  }
+
+  main.home .feature-item {
+    padding: 0.3rem 0.5rem;
+
+    border: 0;
+
+    background: rgba(124, 108, 255, 0.07);
+
+    color: #9da8c0;
+
+    font-size: 0.55rem;
+  }
+
+  main.home .feature-item::before {
+    width: 0.25rem;
+    height: 0.25rem;
+
+    box-shadow: none;
+  }
+
+  /* -----------------------------------------
+     GENERATOR
+
+     This becomes the dominant element.
+  ----------------------------------------- */
+
+  main.home .generator-card {
+    width: 100%;
+
+    border-radius: 1rem;
+
+    box-shadow:
+      0 1rem 3rem rgba(0, 0, 0, 0.24),
+      inset 0 1px 0 rgba(255, 255, 255, 0.02);
   }
 
   main.home .generator-heading {
@@ -1382,20 +1493,40 @@ main.home .loading-orb {
 
     flex-direction: column;
 
-    padding: 1.1rem;
+    gap: 0.55rem;
+
+    padding: 1rem 1rem 0.9rem;
   }
 
+  main.home .generator-heading h2 {
+    font-size: 1rem;
+  }
+
+  main.home .generator-status {
+    padding: 0.25rem 0.45rem;
+
+    font-size: 0.5rem;
+  }
+
+  /* -----------------------------------------
+     STEPS
+  ----------------------------------------- */
+
   main.home .generator-step {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1.9rem minmax(0, 1fr);
 
     gap: 0.75rem;
 
-    padding: 1.1rem;
+    padding: 1.05rem 1rem;
   }
 
   main.home .step-number {
-    width: 2rem;
-    height: 2rem;
+    width: 1.9rem;
+    height: 1.9rem;
+
+    border-radius: 0.5rem;
+
+    font-size: 0.55rem;
   }
 
   main.home .step-heading {
@@ -1403,47 +1534,182 @@ main.home .loading-orb {
 
     flex-direction: column;
 
-    gap: 0.4rem;
+    gap: 0.3rem;
+
+    margin-bottom: 0.65rem;
+  }
+
+  main.home .step-label,
+  main.home .field-title {
+    font-size: 0.52rem;
+  }
+
+  main.home .step-heading h3 {
+    font-size: 0.8rem;
+  }
+
+  main.home .required-label,
+  main.home .optional-label {
+    padding: 0.2rem 0.4rem;
+
+    font-size: 0.48rem;
+  }
+
+  /* -----------------------------------------
+     INPUTS
+  ----------------------------------------- */
+
+  main.home textarea {
+    padding: 0.8rem;
+
+    border-radius: 0.65rem;
+
+    font-size: 0.76rem;
+    line-height: 1.55;
   }
 
   main.home .role-step textarea {
-    min-height: 10rem;
-    height: 10rem;
+    min-height: 8rem;
+    height: 8rem;
   }
+
+  main.home .self-field textarea {
+    min-height: 5rem;
+    height: 5rem;
+  }
+
+  main.home .field-hint {
+    margin-top: 0.4rem;
+
+    font-size: 0.57rem;
+  }
+
+  /* -----------------------------------------
+     BACKGROUND / RESUME
+  ----------------------------------------- */
 
   main.home .background-grid {
     grid-template-columns: 1fr;
+
+    gap: 0.65rem;
   }
+
+  main.home .background-field {
+    padding: 0.7rem;
+
+    border-radius: 0.65rem;
+  }
+
+  main.home .file-label {
+    min-height: 4.5rem;
+
+    padding: 0.65rem;
+
+    gap: 0.55rem;
+  }
+
+  main.home .file-icon {
+    flex-basis: 2rem;
+
+    width: 2rem;
+    height: 2rem;
+
+    font-size: 0.85rem;
+  }
+
+  main.home .file-copy strong {
+    font-size: 0.67rem;
+  }
+
+  main.home .file-copy small {
+    font-size: 0.55rem;
+  }
+
+  main.home .file-action {
+    display: none;
+  }
+
+  /* -----------------------------------------
+     GENERATE BUTTON
+
+     One clear CTA.
+  ----------------------------------------- */
 
   main.home .generator-action {
     align-items: stretch;
 
     flex-direction: column;
 
-    padding: 1.1rem;
+    gap: 0.7rem;
+
+    padding: 1rem;
   }
 
-  main.home .action-copy p {
-    max-width: none;
+  main.home .action-copy {
+    display: none;
   }
 
   main.home .primary-button {
     width: 100%;
     min-width: 0;
+
+    min-height: 3rem;
+
+    padding: 0.8rem 1rem;
+
+    border-radius: 0.7rem;
+
+    font-size: 0.72rem;
   }
 
+  /* -----------------------------------------
+     REPORTS
+
+     Secondary content should feel separated
+     from the main task.
+  ----------------------------------------- */
+
   main.home .reports-section {
-    margin-top: 2.8rem;
+    width: 100%;
+
+    margin-top: 3.5rem;
   }
 
   main.home .reports-heading {
-    align-items: flex-start;
+    align-items: center;
 
-    flex-direction: column;
+    margin-bottom: 0.85rem;
+  }
+
+  main.home .reports-heading h2 {
+    font-size: 1.15rem;
+  }
+
+  main.home .report-count {
+    padding: 0.3rem 0.5rem;
+
+    font-size: 0.52rem;
   }
 
   main.home .reports-list {
     grid-template-columns: 1fr;
+
+    gap: 0.55rem;
+  }
+
+  main.home .report-card {
+    min-height: 4.8rem;
+
+    padding: 0.7rem;
+
+    border-radius: 0.7rem;
+  }
+
+  main.home .report-index {
+    flex-basis: 2.1rem;
+
+    width: 2.1rem;
+    height: 2.1rem;
   }
 }
 
@@ -1453,81 +1719,154 @@ main.home .loading-orb {
 
 @media (max-width: 480px) {
   main.home {
-    padding: 0.85rem 0.65rem 2.5rem;
+    padding: 0.65rem 0.8rem 2.5rem;
   }
 
   main.home .home-header {
-    margin-bottom: 2.25rem;
-  }
-
-  main.home .brand-lockup {
-    gap: 0.5rem;
-
-    font-size: 0.75rem;
+    margin-bottom: 2.75rem;
   }
 
   main.home .brand-mark {
-    width: 1.9rem;
-    height: 1.9rem;
+    width: 1.85rem;
+    height: 1.85rem;
+  }
+
+  main.home .brand-lockup {
+    font-size: 0.7rem;
   }
 
   main.home .logout-button {
-    padding: 0.45rem 0.6rem;
+    min-height: 2.2rem;
 
-    font-size: 0.65rem;
+    padding: 0.4rem 0.55rem;
+
+    font-size: 0.58rem;
+  }
+
+  /* Strong first-glance hierarchy */
+  main.home .home-intro {
+    margin-bottom: 2rem;
+  }
+
+  main.home .eyebrow {
+    margin-bottom: 0.65rem;
+
+    font-size: 0.52rem;
   }
 
   main.home .home-intro h1 {
-    font-size: 2.15rem;
+    max-width: 20rem;
+
+    font-size: clamp(2rem, 10.5vw, 2.35rem);
+
+    line-height: 1;
   }
 
   main.home .intro-copy {
-    font-size: 0.8rem;
+    max-width: 21rem;
+
+    margin-top: 0.85rem;
+
+    font-size: 0.76rem;
   }
 
+  /* Hide secondary feature pills on very small screens.
+     The headline + description already communicate the value. */
   main.home .feature-list {
-    gap: 0.4rem;
-  }
-
-  main.home .feature-item {
-    padding: 0.35rem 0.55rem;
-
-    font-size: 0.59rem;
-  }
-
-  main.home .generator-heading h2 {
-    font-size: 1.05rem;
-  }
-
-  main.home .generator-step {
-    padding: 1rem;
-  }
-
-  main.home .step-heading h3 {
-    font-size: 0.82rem;
-  }
-
-  main.home .role-step textarea {
-    min-height: 9rem;
-    height: 9rem;
-  }
-
-  main.home .file-label {
-    min-height: 5rem;
-  }
-
-  main.home .file-action {
     display: none;
   }
 
-  main.home .reports-heading h2 {
-    font-size: 1.25rem;
+  main.home .generator-heading,
+  main.home .generator-step,
+  main.home .generator-action {
+    padding-left: 0.85rem;
+    padding-right: 0.85rem;
   }
 
-  main.home .report-card {
-    min-height: 5.5rem;
+  main.home .generator-heading {
+    padding-top: 0.9rem;
+    padding-bottom: 0.8rem;
+  }
 
-    padding: 0.75rem;
+  main.home .generator-heading h2 {
+    font-size: 0.94rem;
+  }
+
+  main.home .generator-step {
+    grid-template-columns: 1.75rem minmax(0, 1fr);
+
+    gap: 0.65rem;
+
+    padding-top: 0.9rem;
+    padding-bottom: 0.9rem;
+  }
+
+  main.home .step-number {
+    width: 1.75rem;
+    height: 1.75rem;
+
+    font-size: 0.52rem;
+  }
+
+  main.home .step-heading h3 {
+    font-size: 0.76rem;
+  }
+
+  main.home textarea {
+    font-size: 0.73rem;
+  }
+
+  main.home .role-step textarea {
+    min-height: 7.5rem;
+    height: 7.5rem;
+  }
+
+  main.home .file-label {
+    min-height: 4.25rem;
+  }
+
+  main.home .generator-action {
+    padding-top: 0.85rem;
+    padding-bottom: 0.85rem;
+  }
+
+  main.home .primary-button {
+    min-height: 2.9rem;
+  }
+
+  main.home .reports-section {
+    margin-top: 3rem;
+  }
+
+  main.home .reports-heading h2 {
+    font-size: 1.05rem;
+  }
+
+  main.home .empty-reports {
+    padding: 0.9rem;
+  }
+}
+
+/* =========================================================
+   EXTRA SMALL DEVICES
+========================================================= */
+
+@media (max-width: 360px) {
+  main.home {
+    padding-left: 0.7rem;
+    padding-right: 0.7rem;
+  }
+
+  main.home .home-intro h1 {
+    font-size: 1.9rem;
+  }
+
+  main.home .generator-step {
+    grid-template-columns: 1fr;
+  }
+
+  main.home .step-number {
+    display: none;
   }
 }
 

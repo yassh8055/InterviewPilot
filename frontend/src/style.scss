@@ -1,15 +1,23 @@
 @use "./styles/button.scss";
+
 * {
-  margin: 0%;
-  padding: 0%;
+  margin: 0;
+  padding: 0;
   box-sizing: border-box;
 }
-html,
-body,
-#root {
-  height: 100%;
+
+html {
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.571);
+  min-height: 100%;
+  background: #0b1020;
+}
+
+body {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100vh;
+  margin: 0;
+  background: #0b1020;
   color: whitesmoke;
   font-family:
     system-ui,
@@ -23,8 +31,32 @@ body,
     "Open Sans",
     "Helvetica Neue",
     sans-serif;
+  overflow-x: hidden;
 }
 
-.highlight{
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  background: #0b1020;
+  overflow-x: hidden;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+textarea {
+  max-width: 100%;
+}
+
+.highlight {
   color: rgb(255, 59, 89);
 }
