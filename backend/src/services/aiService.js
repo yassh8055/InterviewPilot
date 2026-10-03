@@ -52,13 +52,9 @@ const generateWithGroq = async (prompt) => {
 
 const generateAIResponse = async (prompt) => {
   try {
-    console.log("AI Provider: Groq");
-
     return await generateWithGroq(prompt);
   } catch (error) {
     console.error("Groq failed:", error.message);
-    console.log("Falling back to Gemini...");
-
     return await generateWithGemini(prompt);
   }
 };
