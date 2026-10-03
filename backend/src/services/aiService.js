@@ -1,10 +1,67 @@
 const { GoogleGenAI } = require("@google/genai");
+const Groq = require("groq-sdk");
 const { z } = require("zod");
 const puppeteer = require("puppeteer");
 
 const ai = new GoogleGenAI({
   apiKey: process.env.GOOGLE_GENAI_API_KEY,
 });
+
+const groq = new Groq({
+  apiKey: process.env.GROQ_API_KEY,
+});
+
+const generateWithGemini = async (prompt) => {
+  const response = await ai.interactions.create({
+    model: "gemini-3.6-flash",
+    input: prompt,
+    response_format: {
+      type: "text",
+      mime_type: "application/json",
+      schema: z.toJSONSchema(interviewReportSchema),
+    },
+  });
+  return response.output_text;
+}
+
+const generateWithGroq = async (prompt) => {
+  const response = await groq.chat.completions.create({
+    model: "openai/gpt-oss-20b",
+
+    messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+
+    max_completion_tokens: 8192,
+
+    response_format: {
+      type: "json_schema",
+      json_schema: {
+        name: "interview_report",
+        strict: true,
+        schema: z.toJSONSchema(interviewReportSchema),
+      },
+    },
+  });
+
+  return response.choices[0].message.content;
+};
+
+const generateAIResponse = async (prompt) => {
+  try {
+    console.log("AI Provider: Groq");
+
+    return await generateWithGroq(prompt);
+  } catch (error) {
+    console.error("Groq failed:", error.message);
+    console.log("Falling back to Gemini...");
+
+    return await generateWithGemini(prompt);
+  }
+};
 
 const interviewReportSchema = z.object({
   matchScore: z
@@ -28,10 +85,11 @@ const interviewReportSchema = z.object({
         answer: z
           .string()
           .describe(
-            "A concise answer framework tailored to the candidate: key concepts to mention, a relevant experience or project example, and a practical implementation or trade-off.",
+            "A concise interview answer framework in 3 to 5 sentences. Include the key concept, one relevant candidate experience or project example when applicable, and an important implementation detail or trade-off.",
           ),
       }),
     )
+    .length(8)
     .describe(
       "Exactly 8 technical questions covering the most important required skills, including both strengths to validate and skill gaps to prepare for.",
     ),
@@ -51,10 +109,11 @@ const interviewReportSchema = z.object({
         answer: z
           .string()
           .describe(
-            "A tailored STAR-method answer outline: situation, task, actions, measurable result, and the lesson or value demonstrated.",
+            "A concise STAR-method answer outline in 3 to 5 sentences covering situation, task, action, result, and lesson. Use only information supported by the candidate's experience.",
           ),
       }),
     )
+    .length(5)
     .describe(
       "Exactly 5 behavioral questions that assess the role's most relevant non-technical competencies.",
     ),
@@ -67,9 +126,9 @@ const interviewReportSchema = z.object({
             "A specific job requirement that is missing from, weakly evidenced by, or less developed in the candidate's resume and self-description.",
           ),
         severity: z
-          .string()
+          .enum(["low", "medium", "high"])
           .describe(
-            "How strongly this gap affects job readiness. Return only one of: low, Medium, or high.",
+            "How strongly this gap affects job readiness. Return only one of: low, medium, or high.",
           ),
       }),
     )
@@ -82,7 +141,7 @@ const interviewReportSchema = z.object({
         day: z
           .number()
           .describe(
-            "The preparation day number as a string, starting at 1 and increasing sequentially.",
+            "The preparation day number, starting at 1 and increasing sequentially.",
           ),
         focus: z
           .string()
@@ -96,6 +155,7 @@ const interviewReportSchema = z.object({
           ),
       }),
     )
+    .length(7)
     .describe(
       "A practical 7-day preparation plan that prioritizes high-severity gaps, role requirements, interview practice, and final review.",
     ),
@@ -105,6 +165,8 @@ const interviewReportSchema = z.object({
       "The title of the job for which the interview report is generated",
     ),
 });
+
+
 
 const generateInterviewReport = async (
   resume,
@@ -116,86 +178,76 @@ const generateInterviewReport = async (
                   Self description : ${selfDescription}
                   job description : ${jobDescription}`;
 
-  const response = await ai.interactions.create({
-    model: "gemini-3.6-flash",
-    input: prompt,
-    response_format: {
-      type: "text",
-      mime_type: "application/json",
-      schema: z.toJSONSchema(interviewReportSchema),
-    },
-  });
-  const result = interviewReportSchema.parse(JSON.parse(response.output_text));
+  const responseText = await generateAIResponse(prompt);
+
+  const result = interviewReportSchema.parse(
+    JSON.parse(responseText)
+  );
+
   return result;
 };
 
+
+//HTML generation for pdf 
+
 const genertePdf = async (htmlContent) => {
- const browser = await puppeteer.launch({
+  const browser = await puppeteer.launch({
     headless: true
-});
+  });
   const page = await browser.newPage();
   await page.setContent(htmlContent, { waitUntil: "networkidle0" });
 
   const pdfBuffer = await page.pdf({
-    format: "A4", margin: {
-      top: "20mm",
-      bottom: "20mm",
-      left: "15mm",
-      right: "15mm"
-    }
+    format: "A4",
+    printBackground: true,
+    margin: {
+      top: "12mm",
+      bottom: "12mm",
+      left: "14mm",
+      right: "14mm",
+    },
   });
 
   await browser.close();
   return pdfBuffer;
 };
 
-const generateReumePdf = async ({
-  resume,
-  selfDescription,
-  jobDescription,
-}) => {
-  const resumePdfSchema = z.object({
-    html: z
-      .string()
-      .describe(
-        "The HTML content of resume which can be converted to pdf using any library like puppeteer",
-      ),
+
+const resumePdfSchema = z.object({
+  html: z
+    .string()
+    .describe(
+      "The HTML content of resume which can be converted to pdf using any library like puppeteer",
+    ),
+});
+
+const generateResumeHtmlWithGroq = async (prompt) => {
+  const response = await groq.chat.completions.create({
+    model: "openai/gpt-oss-20b",
+
+    messages: [
+      {
+        role: "user",
+        content: prompt,
+      },
+    ],
+
+    max_completion_tokens: 8192,
+
+    response_format: {
+      type: "json_schema",
+      json_schema: {
+        name: "resume_pdf",
+        strict: true,
+        schema: z.toJSONSchema(resumePdfSchema),
+      },
+    },
   });
 
-  const prompt = `You are an expert resume writer, recruiter, and ATS optimization specialist.
+  return response.choices[0].message.content;
+};
 
-Create a polished, truthful, job-targeted resume for the candidate using the information below.
-Do not invent employers, job titles, dates, degrees, certifications, technologies, achievements,
-metrics, or other facts. When information is missing, omit it rather than adding a placeholder
-or making an assumption.
-
-Candidate resume and experience:
-${resume}
-
-Candidate self-description:
-${selfDescription}
-
-Target job description:
-${jobDescription}
-
-Resume requirements:
-- Tailor the professional summary, skills, and experience to the target role.
-- Prioritize relevant experience and use concise, achievement-focused bullet points.
-- Use keywords from the job description naturally and accurately for ATS compatibility.
-- Preserve the candidate's actual level of experience; do not exaggerate seniority.
-- Use a clean single-column layout that is easy to scan and prints well on A4 pages.
-- Include appropriate sections such as name/contact information, summary, skills, experience,
-  projects, education, certifications, and achievements when supported by the source data.
-- Use semantic HTML5 elements and inline CSS only. Do not use JavaScript, external assets,
-  external fonts, images, SVGs, forms, markdown, or explanatory text outside the resume.
-- Make the HTML self-contained and suitable for direct use with Puppeteer's page.setContent().
-- Ensure readable typography, consistent spacing, strong section hierarchy, and print-friendly
-  colors. Use page-break rules where helpful, but do not force unnecessary blank pages.
-
-Return only a valid JSON object with exactly one property named "html". Its value must be a
-complete self-contained HTML document beginning with <!DOCTYPE html>. Escape all characters as
-needed so the response is valid JSON. Do not wrap the JSON in Markdown code fences.`;
-
+const generateResumeHtmlWithGemini = async (prompt) => {
   const response = await ai.interactions.create({
     model: "gemini-3.6-flash",
     input: prompt,
@@ -205,7 +257,203 @@ needed so the response is valid JSON. Do not wrap the JSON in Markdown code fenc
       schema: z.toJSONSchema(resumePdfSchema),
     },
   });
-  const jsonContent = JSON.parse(response.output_text);
+
+  return response.output_text;
+};
+
+
+const generateResumeHtml = async (prompt) => {
+  try {
+    console.log("PDF AI Provider: Groq");
+
+    return await generateResumeHtmlWithGroq(prompt);
+  } catch (error) {
+    console.error("Groq PDF generation failed:", error.message);
+    console.log("Falling back to Gemini...");
+
+    return await generateResumeHtmlWithGemini(prompt);
+  }
+};
+
+const generateReumePdf = async ({
+  resume,
+  selfDescription,
+  jobDescription,
+}) => {
+
+  const cleanResume = resume.replace(/\\n/g, "\n");
+  const cleanSelfDescription = selfDescription.replace(/\\n/g, "\n");
+  const cleanJobDescription = jobDescription.replace(/\\n/g, "\n");
+
+
+  const prompt = `
+You are an expert resume strategist, recruiter, ATS optimization specialist,
+and professional resume designer.
+
+Your task has TWO responsibilities:
+
+1. Analyze the candidate against the target job description and create a
+   genuinely job-targeted resume.
+2. Render that tailored resume as polished, professional HTML/CSS.
+
+Do NOT simply reformat or copy the candidate's existing resume.
+Before generating the HTML, internally compare the original resume and
+target job description and determine what should be emphasized, rewritten,
+condensed, or removed. Do not expose this analysis in the final output.
+
+====================
+CANDIDATE RESUME
+====================
+${resume}
+
+====================
+SELF DESCRIPTION
+====================
+${selfDescription}
+
+====================
+TARGET JOB DESCRIPTION
+====================
+${jobDescription}
+
+====================
+TAILORING PROCESS
+====================
+
+First analyze the target job requirements against the candidate's actual
+skills, projects, education, and experience.
+
+Identify:
+- The most relevant skills the candidate already possesses.
+- The candidate's projects or experience that best demonstrate those skills.
+- Skills mentioned in the job description that the candidate does NOT
+  demonstrate.
+- Information in the existing resume that is less relevant to this role.
+
+Then rewrite the resume specifically for this job.
+
+IMPORTANT TRUTHFULNESS RULES:
+
+- Never invent experience.
+- Never invent employers.
+- Never invent job titles.
+- Never invent certifications.
+- Never invent technologies.
+- Never invent achievements.
+- Never invent metrics.
+- Never claim the candidate has a skill simply because it appears
+  in the job description.
+- Only use information supported by the candidate's resume or
+  self-description.
+
+RELEVANCE RULES:
+
+- Rewrite the professional summary specifically for the target role.
+- Prioritize skills relevant to the target job.
+- Reorder skills based on relevance.
+- Rewrite project descriptions to emphasize genuinely relevant
+  functionality and technologies.
+- Rewrite bullet points instead of blindly copying them.
+- Condense irrelevant information.
+- Remove redundant information.
+- Use terminology from the job description only when it accurately
+  describes the candidate's existing experience.
+- Do not turn unrelated experience into relevant experience.
+- Preserve the candidate's actual experience level.
+
+For example, if the job description requires cybersecurity but the candidate
+only demonstrates authentication, JWT, protected routes, and API security,
+you may emphasize those existing security-related experiences.
+
+You must NOT add SIEM, penetration testing, incident response, vulnerability
+assessment, or other cybersecurity technologies unless they are actually
+supported by the candidate's information.
+
+====================
+RESUME STRUCTURE
+====================
+
+Use the sections that are supported by the candidate's information:
+
+- Header
+- Professional Summary
+- Technical Skills
+- Experience
+- Projects
+- Education
+- Certifications
+- Achievements
+
+Do not create empty sections.
+
+====================
+DESIGN
+====================
+
+Create a professional modern single-column resume.
+
+Requirements:
+
+- 1 page when the relevant information naturally fits.
+- Maximum 2 pages when necessary.
+- Never create a third page.
+- Strong visual hierarchy.
+- Clear section headings.
+- Compact professional spacing.
+- Readable typography.
+- Good use of whitespace.
+- Consistent alignment.
+- Professional bullet points.
+- ATS-friendly structure.
+- No unnecessary decorative elements.
+- No tables for layout.
+- No sidebar.
+- No excessive colors.
+- No images.
+- No SVG.
+- No external assets.
+- No external fonts.
+- No JavaScript.
+
+Use semantic HTML5.
+
+Put all CSS inside a single <style> element.
+
+The HTML must be completely self-contained and directly usable with:
+
+page.setContent()
+
+Do not output Markdown.
+
+Do not output explanations.
+
+Do not output anything outside the required JSON response.
+
+The final result must look like a professionally designed resume,
+not like raw text converted into HTML.
+
+Return the result using the provided JSON schema.
+`;
+  // const response = await ai.interactions.create({
+  //   model: "gemini-3.6-flash",
+  //   input: prompt,
+  //   response_format: {
+  //     type: "text",
+  //     mime_type: "application/json",
+  //     schema: z.toJSONSchema(resumePdfSchema),
+  //   },
+  // });
+  // const jsonContent = JSON.parse(response.output_text);
+  // const pdfBuffer = await genertePdf(jsonContent.html);
+
+  // return pdfBuffer;
+
+  const responseText = await generateResumeHtml(prompt);
+
+  const jsonContent = resumePdfSchema.parse(
+    JSON.parse(responseText)
+  );
+
   const pdfBuffer = await genertePdf(jsonContent.html);
 
   return pdfBuffer;
